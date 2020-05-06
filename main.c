@@ -11,13 +11,17 @@
 #define EPSILON 0.01
 
 //parametri
-static float animation_ongoing;
-static float param=0.0001;
-static float bounce1=0;
-static float bounce2=0;
-static float bounce3=0;
-static float bounce4=0;
-//static float zelenaNota,crvenaNota,zutaNota;
+static double animation_ongoing;
+static double param=0.0001;
+static double param1,param2,param3,param4;
+static double parr1,parr2,parr3,parr4;
+static double dy1,dz1,dy2,dz2,dy3,dz3,dy4,dz4;
+static double bounce1=0;
+static double bounce2=0;
+static double bounce3=0;
+static double bounce4=0;
+
+//static double zelenaNota,crvenaNota,zutaNota;
 
 //dimenzije prozora
 static int window_width, window_height;
@@ -70,12 +74,12 @@ static void on_reshape(int width, int height)
     glLoadIdentity();
     gluPerspective(
             80,
-            window_width/(float)window_height,
+            window_width/(double)window_height,
             1, 1000);
 
 }
 
-void dobos2()
+void dobos(double r, double g, double b)
 {
     glPushMatrix();
 
@@ -93,12 +97,12 @@ glPopMatrix();
         
 glPushMatrix();
     
-    glColor3f(1,0.2,0.3);
+    glColor3f(r,g,b);
     glRotatef(90,1,0,0);
     glTranslatef(0,1,0);
-    for (float u = 0; u < PI; u += PI / 20) {
+    for (double u = 0; u < PI; u += PI / 20) {
         glBegin(GL_TRIANGLE_STRIP);
-        for (float v = 0; v <= PI*2 + EPSILON; v += PI / 20) {
+        for (double v = 0; v <= PI*2 + EPSILON; v += PI / 20) {
         glNormal3f(sin(v)/2, 0, cos(v)/2);
         glVertex3f(sin(v)/2 ,u/20,cos(v)/2);
         
@@ -113,120 +117,84 @@ glPopMatrix();
 glPopMatrix();
     
 }
-void dobos1()
+    
+void prvanota()
 {
     glPushMatrix();
+    
+    param1=1.3*parr1;
+    bounce1=fabs(sin(2.5*param1));
+    
+    dy1= -2+ parr1;
+    dz1 = 0.4+bounce1;
 
-glScalef(0.5,0.5,0.5);
+    glTranslatef(0.9,dy1-1,dz1);
+    glRotatef(-50*parr1*2.3,0.1,0,0);
+    glPushMatrix();
+    glTranslatef(0,0,-0.5);
+    dobos(0.3,0.9,0.3);
+    glPopMatrix();
+    glPopMatrix();
 
-glPushMatrix();
-    glColor3f(1,0.99,0.99);
-    glRotatef(90,1,0,0);
-    glTranslatef(0,1.23,0);
-    glScalef(0.49,0.001,0.49);
-    glutSolidSphere(1,100,100);
-    
-glPopMatrix();
-        
-        
-glPushMatrix();
-    
-    glColor3f(0.2,0.8,0.3);
-    glRotatef(90,1,0,0);
-    glTranslatef(0,1,0);
-    for (float u = 0; u < PI; u += PI / 20) {
-        glBegin(GL_TRIANGLE_STRIP);
-        for (float v = 0; v <= PI*2 + EPSILON; v += PI / 20) {
-        glNormal3f(sin(v)/2, 0, cos(v)/2);
-        glVertex3f(sin(v)/2 ,u/20,cos(v)/2);
-        
-        glNormal3f(sin(v)/2, 0, cos(v)/2);
-        glVertex3f(sin(v)/2 ,u/20+ PI/20,cos(v)/2);
-        }
-        glEnd();
-    }
-    
-glPopMatrix();
-
-glPopMatrix();
-    
 }
-void dobos3()
+void druganota()
 {
     glPushMatrix();
-
-glScalef(0.5,0.5,0.5);
-
-glPushMatrix();
-    glColor3f(1,0.99,0.99);
-    glRotatef(90,1,0,0);
-    glTranslatef(0,1.23,0);
-    glScalef(0.49,0.001,0.49);
-    glutSolidSphere(1,100,100);
     
-glPopMatrix();
-        
-        
-glPushMatrix();
+    param2=1.95*parr2;
+    bounce2=fabs(sin(2.5*param2));
     
-    glColor3f(1,0.5,0);
-    glRotatef(90,1,0,0);
-    glTranslatef(0,1,0);
-    for (float u = 0; u < PI; u += PI / 20) {
-        glBegin(GL_TRIANGLE_STRIP);
-        for (float v = 0; v <= PI*2 + EPSILON; v += PI / 20) {
-        glNormal3f(sin(v)/2, 0, cos(v)/2);
-        glVertex3f(sin(v)/2 ,u/20,cos(v)/2);
-        
-        glNormal3f(sin(v)/2, 0, cos(v)/2);
-        glVertex3f(sin(v)/2 ,u/20+ PI/20,cos(v)/2);
-        }
-        glEnd();
-    }
+    dy2= -2+ 1.5*parr2;
+    dz2 = 0.4+bounce2;
     
-glPopMatrix();
-
-glPopMatrix();
-    
+    glTranslatef(0.3,dy2-1,dz2);
+    glRotatef(-100*parr2,0.1,0,0);
+    glPushMatrix();
+    glTranslatef(0,0,-0.5);
+    dobos(0.9,0.3,0.3);
+    glPopMatrix();
+    glPopMatrix();
 }
-void dobos4()
+
+void trecanota()
 {
     glPushMatrix();
-
-glScalef(0.5,0.5,0.5);
-
-glPushMatrix();
-    glColor3f(1,0.99,0.99);
-    glRotatef(90,1,0,0);
-    glTranslatef(0,1.23,0);
-    glScalef(0.49,0.001,0.49);
-    glutSolidSphere(1,100,100);
     
-glPopMatrix();
-        
-        
-glPushMatrix();
+    param3=2.6*parr3;
+    bounce3=fabs(sin(2.5*param3));
     
-    glColor3f(0.3,0.2,1);
-    glRotatef(90,1,0,0);
-    glTranslatef(0,1,0);
-    for (float u = 0; u < PI; u += PI / 20) {
-        glBegin(GL_TRIANGLE_STRIP);
-        for (float v = 0; v <= PI*2 + EPSILON; v += PI / 20) {
-        glNormal3f(sin(v)/2, 0, cos(v)/2);
-        glVertex3f(sin(v)/2 ,u/20,cos(v)/2);
-        
-        glNormal3f(sin(v)/2, 0, cos(v)/2);
-        glVertex3f(sin(v)/2 ,u/20+ PI/20,cos(v)/2);
-        }
-        glEnd();
-    }
+    dy3= -2+ 2*parr3;
+    dz3 = 0.4+bounce3;
     
-glPopMatrix();
-
-glPopMatrix();
-    
+    glTranslatef(-0.3,dy3-1,dz3);
+    glRotatef(-130*parr3,0.1,0,0);
+    glPushMatrix();
+    glTranslatef(0,0,-0.5);
+    dobos(1,0.8,0);
+    glPopMatrix();
+    glPopMatrix();
 }
+
+
+void cetvrtanota()
+{
+     glPushMatrix();
+    
+    param4=3.6*parr4;
+    bounce4=fabs(sin(2.5*param4));
+    
+    dy4= -2+ 2.5*parr4;
+    dz4 = 0.4+bounce4;
+    
+    glTranslatef(-0.9,dy4-1,dz4);
+    glRotatef(-170*parr4,0.1,0,0);
+    glPushMatrix();
+    glTranslatef(0,0,-0.5);
+    dobos(0.3,0.3,0.9);
+    glPopMatrix();
+    glPopMatrix();
+}
+
 
 static void on_display(void)
 {
@@ -237,11 +205,11 @@ static void on_display(void)
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     gluLookAt(
-            0, 2.75, 2.5,
+            -3, 6.5 ,3,
             0, 0, 0,
             0, 0, 1
         );
-
+/*
 //ose    
         glBegin(GL_LINES);
 
@@ -249,18 +217,18 @@ static void on_display(void)
         glVertex3f(0,0,0);
         glVertex3f(0,0,10);
         glEnd();
-
+*/
 //staza
     glPushMatrix();
     glColor3f(0.5, 0.5, 0.5 );
-    glScalef(2.5, 4.9, 0.3);
+    glScalef(2.5, 10, 0.3);
     glutSolidCube(1);
     glPopMatrix();
     
 //trava
     glPushMatrix();
     glColor3f(0, 0.3, 0);
-    glScalef(20, 4.9, 0.29);
+    glScalef(100, 500, 0.29);
     glutSolidCube(1);
     glPopMatrix();
 
@@ -269,59 +237,30 @@ static void on_display(void)
     glColor3f(0, 0, 0.8);
     
     glTranslatef(0,-2.5,0);
-    glScalef(20, 0.1, 10);
+    glScalef(100, 0.1, 500);
     glutSolidCube(1);
     glPopMatrix();
+    
+//pesacki
+    
+    //gornja
+    glBegin(GL_LINES);
+        glColor3f(1,0,0);
+        glVertex3f(-10,5.3,1.5);
+        glVertex3f(10,5.3,1.5);
+    glEnd();
+    
+    //donja
+    glBegin(GL_LINES);
+        glColor3f(1,0,0);
+        glVertex3f(-10,5.58,1.5);
+        glVertex3f(10,5.58,1.5);
+    glEnd();
 
-//DOBOSI
-    //prva nota
-    
-    glPushMatrix();
-    
-    bounce1=fabs(sin(2*param));
-    glTranslatef(0.9,-2+param,0.4+bounce1);
-    glRotatef(-100*param,0.1,0,0);
-    glPushMatrix();
-    glTranslatef(0,0,-0.5);
-    glColor3f(0.1, 0.8, 0.1);
-    dobos1();
-    glPopMatrix();
-    glPopMatrix();
-    //druga
-    glPushMatrix();
-    
-    bounce2=fabs(sin(param));
-    glTranslatef(0.3,-2+param,0.4+bounce2);
-    glRotatef(-100*param,0.1,0,0);
-    glPushMatrix();
-    glTranslatef(0,0,-0.5);
-    dobos2();
-    glPopMatrix();
-    glPopMatrix();
-    //treca
-    glPushMatrix();
-    
-    bounce3=fabs(cos(2*param));
-    glTranslatef(-0.3,-2+param,0.4+bounce3);
-    glRotatef(-100*param,0.1,0,0);
-    glPushMatrix();
-    glTranslatef(0,0,-0.5);
-    glColor3f(1, 0.5, 0);
-    dobos3();
-    glPopMatrix();
-    glPopMatrix();
-    //cetvrta
-    glPushMatrix();
-    
-    bounce4=fabs(cos(param));
-    glTranslatef(-0.9,-2+param,0.4+bounce1);
-    glRotatef(-100*param,0.1,0,0);
-    glPushMatrix();
-    glTranslatef(0,0,-0.5);
-    glColor3f(0.1, 0.1, 0.8);
-    dobos4();
-    glPopMatrix();
-    glPopMatrix();
+    prvanota();
+    druganota();
+    trecanota();
+    cetvrtanota();
     
     glutSwapBuffers();
 }
@@ -351,11 +290,17 @@ static void on_keyboard(unsigned char key, int x, int y)
     case 'r':
     case 'R':
     
+    for(int i=0;i<2;i++)
+    {
         animation_ongoing = 0;
         param=0.0001;
+        parr1=0.0001;
+        parr2=0.0001;
+        parr3=0.0001;
+        parr4=0.0001;
         glutPostRedisplay();
         break;
-        
+    }
     }
 }
 
@@ -367,6 +312,32 @@ static void on_timer(int value)
     
 
     param += 0.1;
+    parr1 +=0.1;
+    parr2 +=0.1;
+    parr3 +=0.1;
+    parr4 +=0.1;
+    
+    if (dy1>6.5)
+    {
+        parr1=0.0001;
+        
+    }  
+    if (dy2>6.5)
+    {
+        parr2=0.0001;
+       
+    }  
+    if (dy3>6.5)
+    {
+        parr3=0.0001;
+        
+    }  
+    if (dy4>6.5)
+    {
+        parr4=0.0001;
+       
+    } 
+    
     
     glutPostRedisplay();
 
