@@ -12,12 +12,9 @@
 
 //parametri
 static double animation_ongoing;
-static double param=0.0001;
-static double param1,param11,param21,param2,param31,param3,param41,param4;
 static double parr1,parr2;
 static double dy1,dz1,dy2,dz2,dy3,dz3,dy4,dz4;
 static double dy11,dz11,dy21,dz21,dy31,dz31,dy41,dz41;
-static double bounce1,bounce11,bounce2,bounce21,bounce3,bounce31,bounce4,bounce41;
 
 static int indd1=1;
 static int indd2=0;
@@ -43,7 +40,7 @@ int main(int argc, char **argv)
     glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
 
     // Podesavanje prozora
-    glutInitWindowSize(800, 800);
+    glutInitWindowSize(600, 800);
     glutInitWindowPosition(540, 100);
     glutCreateWindow(argv[0]);
 
@@ -125,31 +122,27 @@ glPopMatrix();
 void prvanota(int brz)
 {
     glPushMatrix();
-    
-    param1=brzine[brz][0]*parr1;
-    bounce1=fabs(sin(2.5*param1));
-    
+
     dy1= -2+ brzine[brz][1]*parr1;
-    dz1 = 0.4+bounce1;
+    dz1 = 0.4+fabs(sin(2.5*brzine[brz][0]*parr1));
 
     glTranslatef(0.9,dy1-1,dz1);
     glRotatef(-brzine[brz][2]*parr1,0.1,0,0);
+    
     glPushMatrix();
     glTranslatef(0,0,-0.5);
     dobos(0.3,0.9,0.3);
     glPopMatrix();
+    
     glPopMatrix();
 
 }
 void druganota(int brz)
 {
     glPushMatrix();
-    
-    param2=brzine[brz][0]*parr1;
-    bounce2=fabs(sin(2.5*param2));
-    
+
     dy2= -2+ brzine[brz][1]*parr1;
-    dz2 = 0.4+bounce2;
+    dz2 = 0.4+fabs(sin(2.5*brzine[brz][0]*parr1));
     
     glTranslatef(0.3,dy2-1,dz2);
     glRotatef(-brzine[brz][2]*parr1,0.1,0,0);
@@ -163,12 +156,9 @@ void druganota(int brz)
 void trecanota(int brz)
 {
     glPushMatrix();
-    
-    param3=brzine[brz][0]*parr1;
-    bounce3=fabs(sin(2.5*param3));
-    
+
     dy3= -2+ brzine[brz][1]*parr1;
-    dz3 = 0.4+bounce3;
+    dz3 = 0.4+fabs(sin(2.5*brzine[brz][0]*parr1));
     
     glTranslatef(-0.3,dy3-1,dz3);
     glRotatef(-brzine[brz][2]*parr1,0.1,0,0);
@@ -183,12 +173,9 @@ void trecanota(int brz)
 void cetvrtanota(int brz)
 {
     glPushMatrix();
-    
-    param4=brzine[brz][0]*parr1;
-    bounce4=fabs(sin(2.5*param4));
-    
+
     dy4= -2+ brzine[brz][1]*parr1;
-    dz4 = 0.4+bounce4;
+    dz4 = 0.4+fabs(sin(2.5*brzine[brz][0]*parr1));
     
     glTranslatef(-0.9,dy4-1,dz4);
     glRotatef(-brzine[brz][2]*parr1,0.1,0,0);
@@ -203,12 +190,9 @@ void cetvrtanota(int brz)
 void prvanota2(int brz)
 {
     glPushMatrix();
-    
-    param11=brzine[brz][0]*parr2;
-    bounce11=fabs(sin(2.5*param11));
-    
+
     dy11= -2+ brzine[brz][1]*parr2;
-    dz11 = 0.4+bounce11;
+    dz11 = 0.4+fabs(sin(2.5*brzine[brz][0]*parr2));
 
     glTranslatef(0.9,dy11-1,dz11);
     glRotatef(-brzine[brz][2]*parr2,0.1,0,0);
@@ -222,12 +206,9 @@ void prvanota2(int brz)
 void druganota2(int brz)
 {
     glPushMatrix();
-    
-    param21=brzine[brz][0]*parr2;
-    bounce21=fabs(sin(2.5*param21));
-    
+ 
     dy21= -2+ brzine[brz][1]*parr2;
-    dz21 = 0.4+bounce21;
+    dz21 = 0.4+fabs(sin(2.5*brzine[brz][0]*parr2));
     
     glTranslatef(0.3,dy21-1,dz21);
     glRotatef(-brzine[brz][2]*parr2,0.1,0,0);
@@ -241,12 +222,9 @@ void druganota2(int brz)
 void trecanota2(int brz)
 {
     glPushMatrix();
-    
-    param31=brzine[brz][0]*parr2;
-    bounce31=fabs(sin(2.5*param31));
-    
+
     dy31= -2+ brzine[brz][1]*parr2;
-    dz31 = 0.4+bounce31;
+    dz31 = 0.4+fabs(sin(2.5*brzine[brz][0]*parr2));
     
     glTranslatef(-0.3,dy31-1,dz31);
     glRotatef(-brzine[brz][2]*parr2,0.1,0,0);
@@ -261,12 +239,9 @@ void trecanota2(int brz)
 void cetvrtanota2(int brz)
 {
     glPushMatrix();
-    
-    param41=brzine[brz][0]*parr2;
-    bounce41=fabs(sin(2.5*param41));
-    
+
     dy41= -2+ brzine[brz][1]*parr2;
-    dz41 = 0.4+bounce41;
+    dz41 = 0.4+fabs(sin(2.5*brzine[brz][0]*parr2));
     
     glTranslatef(-0.9,dy41-1,dz41);
     glRotatef(-brzine[brz][2]*parr2,0.1,0,0);
@@ -281,6 +256,9 @@ static void on_display(void)
 //ciscenje ekrana
     glClear(GL_COLOR_BUFFER_BIT  | GL_DEPTH_BUFFER_BIT);
  
+   /*     glCullFace(GL_BACK);
+        glEnable(GL_CULL_FACE);*/
+    
 //kamera
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -392,7 +370,7 @@ if(indd2)
             gotova21=1;
             //printf("%d ",brzina21);
         }
-        druganota2(brzina21);
+        druganota2(3);
         
         if(!gotova31)
         {
@@ -439,17 +417,15 @@ static void on_keyboard(unsigned char key, int x, int y)
     case 'r':
     case 'R':
     
-    for(int i=0;i<2;i++)
-    {
         animation_ongoing = 0;
-        param=0.0001;
         parr1=0.0001;
         parr2=0.0001;
         indd1=1;
         indd2=0;
+        srand(time(NULL));
         glutPostRedisplay();
         break;
-    }
+    
     }
 }
 
@@ -458,41 +434,48 @@ static void on_timer(int value)
     
     if (value != TIMER_ID)
         return;
-    
 
-    param += 0.1;
     if(indd1)
         parr1 +=0.1;
     if(indd2)
         parr2 +=0.1;
     
     
-if (dy1>3.5 && dy2>3.5 && dy3>3.5 && dy4>3.5 && !indd2)
-    {
-        indd2=1;
-    }
-if (dy11>3.5 && dy21>3.5 && dy31>3.5 && dy41>3.5 && !indd1)
-    {
-        indd1=1;
-    }
-if (dy1>5.8 && dy2>5.8 && dy3>5.8 && dy4>5.8)
+
+if (dy1>5.8 && dy2>5.8 && dy3>5.8 && dy4>5.8 && indd1)
     {
         parr1=0.0001;
+        indd1=0;
         gotova1=0;
         gotova2=0;
         gotova3=0;
         gotova4=0;
     }
-if (dy11>5.8 && dy21>5.8 && dy31>5.8 && dy41>5.8)
+if (dy11>3 && dy21>3 && dy31>3 && dy41>3 && !indd1)
     {
-        parr2=0.0001;
+        //parr1=0.0001;
+        indd1=1;
+        
+    }
+if (dy11>5.8 && dy21>5.8 && dy31>5.8 && dy41>5.8 && indd2)
+    {
+        indd2=0;
         gotova11=0;
         gotova21=0;
         gotova31=0;
         gotova41=0;
     }
+if (dy1>3 && dy2>3 && dy3>3 && dy4>3 && !indd2)
+    {
+        parr2=0.0001;
+        indd2=1;
+        
+    }
 
-    //printf("%lf %lf %lf\n", param,parr1,parr2);
+    /*printf(" %lf %lf\n",parr1,parr2);
+    printf("%lf %lf\n",dy1,dy21);
+    printf("%d %d\n\n",indd1,indd2);*/
+
     
     glutPostRedisplay();
 
