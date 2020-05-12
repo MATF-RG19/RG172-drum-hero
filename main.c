@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <windows.h>
 #include <GL/glut.h>
 #include <stdlib.h>
 #include <time.h>
@@ -13,8 +12,9 @@
 
 //parametri
 static double animation_ongoing;
-static double parr[2]={0.0001,0.000};
-static double yKoord[8],zKoord[8];
+static double parr1,parr2;
+static double dy1,dz1,dy2,dz2,dy3,dz3,dy4,dz4;
+static double dy11,dz11,dy21,dz21,dy31,dz31,dy41,dz41;
 
 static int indd1=1;
 static int indd2=0;
@@ -67,7 +67,7 @@ static void on_reshape(int width, int height)
     /* Pamte se sirina i visina prozora. */
     window_width = width;
     window_height = height;
-
+    
 //pogled
     glViewport(0, 0, window_width, window_height);
 
@@ -92,12 +92,12 @@ glPushMatrix();
     glTranslatef(0,1.23,0);
     glScalef(0.49,0.001,0.49);
     glutSolidSphere(1,100,100);
-
+    
 glPopMatrix();
-
-
+        
+        
 glPushMatrix();
-
+    
     glColor3f(r,g,b);
     glRotatef(90,1,0,0);
     glTranslatef(0,1,0);
@@ -106,47 +106,46 @@ glPushMatrix();
         for (double v = 0; v <= PI*2 + EPSILON; v += PI / 20) {
         glNormal3f(sin(v)/2, 0, cos(v)/2);
         glVertex3f(sin(v)/2 ,u/20,cos(v)/2);
-
+        
         glNormal3f(sin(v)/2, 0, cos(v)/2);
         glVertex3f(sin(v)/2 ,u/20+ PI/20,cos(v)/2);
         }
         glEnd();
     }
-
+    
 glPopMatrix();
 
 glPopMatrix();
-
+    
 }
-
-void prvanota(int brz, int indeks, int parametar)
+    
+void prvanota(int brz)
 {
     glPushMatrix();
 
-    yKoord[indeks]= -2+ brzine[brz][1]*parr[parametar];
-    zKoord[indeks] = 0.4+fabs(sin(2.5*brzine[brz][0]*parr[parametar]));
+    dy1= -2+ brzine[brz][1]*parr1;
+    dz1 = 0.4+fabs(sin(2.5*brzine[brz][0]*parr1));
 
-    glTranslatef(0.9,yKoord[indeks]-1,zKoord[indeks]);
-    glRotatef(-brzine[brz][2]*parr[parametar],0.1,0,0);
-
+    glTranslatef(0.9,dy1-1,dz1);
+    glRotatef(-brzine[brz][2]*parr1,0.1,0,0);
+    
     glPushMatrix();
     glTranslatef(0,0,-0.5);
     dobos(0.3,0.9,0.3);
     glPopMatrix();
-
+    
     glPopMatrix();
 
 }
-
-void druganota(int brz, int indeks, int parametar)
+void druganota(int brz)
 {
     glPushMatrix();
 
-    yKoord[indeks]= -2+ brzine[brz][1]*parr[parametar];
-    zKoord[indeks] = 0.4+fabs(sin(2.5*brzine[brz][0]*parr[parametar]));
-
-    glTranslatef(0.3,yKoord[indeks]-1,zKoord[indeks]);
-    glRotatef(-brzine[brz][2]*parr[parametar],0.1,0,0);
+    dy2= -2+ brzine[brz][1]*parr1;
+    dz2 = 0.4+fabs(sin(2.5*brzine[brz][0]*parr1));
+    
+    glTranslatef(0.3,dy2-1,dz2);
+    glRotatef(-brzine[brz][2]*parr1,0.1,0,0);
     glPushMatrix();
     glTranslatef(0,0,-0.5);
     dobos(0.9,0.3,0.3);
@@ -154,15 +153,15 @@ void druganota(int brz, int indeks, int parametar)
     glPopMatrix();
 }
 
-void trecanota(int brz, int indeks, int parametar)
+void trecanota(int brz)
 {
     glPushMatrix();
 
-    yKoord[indeks]= -2+ brzine[brz][1]*parr[parametar];
-    zKoord[indeks] = 0.4+fabs(sin(2.5*brzine[brz][0]*parr[parametar]));
-
-    glTranslatef(-0.3,yKoord[indeks]-1,zKoord[indeks]);
-    glRotatef(-brzine[brz][2]*parr[parametar],0.1,0,0);
+    dy3= -2+ brzine[brz][1]*parr1;
+    dz3 = 0.4+fabs(sin(2.5*brzine[brz][0]*parr1));
+    
+    glTranslatef(-0.3,dy3-1,dz3);
+    glRotatef(-brzine[brz][2]*parr1,0.1,0,0);
     glPushMatrix();
     glTranslatef(0,0,-0.5);
     dobos(1,0.8,0);
@@ -170,47 +169,96 @@ void trecanota(int brz, int indeks, int parametar)
     glPopMatrix();
 }
 
-void cetvrtanota(int brz, int indeks, int parametar)
+
+void cetvrtanota(int brz)
 {
     glPushMatrix();
 
-    yKoord[indeks]= -2+ brzine[brz][1]*parr[parametar];
-    zKoord[indeks] = 0.4+fabs(sin(2.5*brzine[brz][0]*parr[parametar]));
-
-    glTranslatef(-0.9,yKoord[indeks]-1,zKoord[indeks]);
-    glRotatef(-brzine[brz][2]*parr[parametar],0.1,0,0);
+    dy4= -2+ brzine[brz][1]*parr1;
+    dz4 = 0.4+fabs(sin(2.5*brzine[brz][0]*parr1));
+    
+    glTranslatef(-0.9,dy4-1,dz4);
+    glRotatef(-brzine[brz][2]*parr1,0.1,0,0);
     glPushMatrix();
     glTranslatef(0,0,-0.5);
     dobos(0.3,0.3,0.9);
     glPopMatrix();
     glPopMatrix();
 }
+//drugi talas
 
-int verovatnoca()
+void prvanota2(int brz)
 {
-    //srand(time(NULL));
+    glPushMatrix();
 
-    int broj= rand() % 100;
-    if(broj<25)
-        return 0;
-    if(broj<50)
-        return 1;
-    if(broj<75)
-        return 2;
-    else
-        return 3;
+    dy11= -2+ brzine[brz][1]*parr2;
+    dz11 = 0.4+fabs(sin(2.5*brzine[brz][0]*parr2));
 
+    glTranslatef(0.9,dy11-1,dz11);
+    glRotatef(-brzine[brz][2]*parr2,0.1,0,0);
+    glPushMatrix();
+    glTranslatef(0,0,-0.5);
+    dobos(0.3,0.9,0.3);
+    glPopMatrix();
+    glPopMatrix();
 
 }
+void druganota2(int brz)
+{
+    glPushMatrix();
+ 
+    dy21= -2+ brzine[brz][1]*parr2;
+    dz21 = 0.4+fabs(sin(2.5*brzine[brz][0]*parr2));
+    
+    glTranslatef(0.3,dy21-1,dz21);
+    glRotatef(-brzine[brz][2]*parr2,0.1,0,0);
+    glPushMatrix();
+    glTranslatef(0,0,-0.5);
+    dobos(0.9,0.3,0.3);
+    glPopMatrix();
+    glPopMatrix();
+}
 
+void trecanota2(int brz)
+{
+    glPushMatrix();
+
+    dy31= -2+ brzine[brz][1]*parr2;
+    dz31 = 0.4+fabs(sin(2.5*brzine[brz][0]*parr2));
+    
+    glTranslatef(-0.3,dy31-1,dz31);
+    glRotatef(-brzine[brz][2]*parr2,0.1,0,0);
+    glPushMatrix();
+    glTranslatef(0,0,-0.5);
+    dobos(1,0.8,0);
+    glPopMatrix();
+    glPopMatrix();
+}
+
+
+void cetvrtanota2(int brz)
+{
+    glPushMatrix();
+
+    dy41= -2+ brzine[brz][1]*parr2;
+    dz41 = 0.4+fabs(sin(2.5*brzine[brz][0]*parr2));
+    
+    glTranslatef(-0.9,dy41-1,dz41);
+    glRotatef(-brzine[brz][2]*parr2,0.1,0,0);
+    glPushMatrix();
+    glTranslatef(0,0,-0.5);
+    dobos(0.3,0.3,0.9);
+    glPopMatrix();
+    glPopMatrix();
+}
 static void on_display(void)
 {
 //ciscenje ekrana
     glClear(GL_COLOR_BUFFER_BIT  | GL_DEPTH_BUFFER_BIT);
-
+ 
    /*     glCullFace(GL_BACK);
         glEnable(GL_CULL_FACE);*/
-
+    
 //kamera
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -220,7 +268,7 @@ static void on_display(void)
             0, 0, 1
         );
 
-//ose
+//ose    
         glBegin(GL_LINES);
 
         glColor3f(1,0,0);
@@ -233,7 +281,7 @@ static void on_display(void)
     glScalef(2.5, 10, 0.3);
     glutSolidCube(1);
     glPopMatrix();
-
+    
 //trava
     glPushMatrix();
     glColor3f(0, 0.3, 0);
@@ -244,21 +292,21 @@ static void on_display(void)
 //pozadina
     glPushMatrix();
     glColor3f(0, 0, 0.8);
-
+    
     glTranslatef(0,-2.5,0);
     glScalef(100, 0.1, 500);
     glutSolidCube(1);
     glPopMatrix();
-
+    
 //pesacki
-
+    
     //gornja
     glBegin(GL_LINES);
         glColor3f(1,0,0);
         glVertex3f(-10,4.6,0.3);
         glVertex3f(10,4.6,0.3);
     glEnd();
-
+    
     //donja
     glBegin(GL_LINES);
         glColor3f(1,0,0);
@@ -267,80 +315,80 @@ static void on_display(void)
     glEnd();
 //  prvi talas
 if(indd1)
-{
+{    
 
     if(!gotova1)
     {
-        brzina1=verovatnoca();
+        brzina1=rand()%4;
         gotova1=1;
         //printf("%d ",brzina1);
     }
-    prvanota(brzina1,0,0);
-
-
+    prvanota(brzina1);
+    
+      
     if(!gotova2)
     {
-        brzina2=verovatnoca();
+        brzina2=rand()%4;
         gotova2=1;
         //printf("%d ",brzina2);
     }
-    druganota(brzina2,1,0);
-
+    druganota(brzina2);
+    
     if(!gotova3)
     {
-        brzina3=verovatnoca();
+        brzina3=rand()%4;
         gotova3=1;
-        //printf("%d ",brzina3);,0
+        //printf("%d ",brzina3);
     }
-    trecanota(brzina3,2,0);
-
+    trecanota(brzina3);
+    
     if(!gotova4)
     {
-        brzina4=verovatnoca();
+        brzina4=rand()%4;
         //printf("%d ",brzina4);
         gotova4=1;
     }
-    cetvrtanota(brzina4,3,0);
+    cetvrtanota(brzina4);
 }
 //drugi talas
 
 if(indd2)
     {
-
+        
         if(!gotova11)
         {
-            brzina11=verovatnoca();
+            brzina11=rand()%4;
             gotova11=1;
             //printf("%d ",brzina11);
         }
-        prvanota(brzina11,4,1);
-
-
+        prvanota2(brzina11);
+        
+        
         if(!gotova21)
         {
-            brzina21=verovatnoca();
+            brzina21=rand()%4;
             gotova21=1;
             //printf("%d ",brzina21);
         }
-        druganota(brzina21,5,1);
-
+        druganota2(3);
+        
         if(!gotova31)
         {
-            brzina31=verovatnoca();
+            brzina31=rand()%4;
             gotova31=1;
             //printf("%d ",brzina31);
         }
-        trecanota(brzina31,6,1);
-
+        trecanota2(brzina31);
+        
         if(!gotova41)
         {
-            brzina41=verovatnoca();
+            brzina41=rand()%4;
             //printf("%d ",brzina41);
             gotova41=1;
         }
-        cetvrtanota(brzina41,7,1);
+        cetvrtanota2(brzina41);
     }
-
+  
     glutSwapBuffers();
 }
 
@@ -362,54 +410,54 @@ static void on_keyboard(unsigned char key, int x, int y)
 
     case 's':
     case 'S':
-
+    
         animation_ongoing = 0;
         break;
-
+    
     case 'r':
     case 'R':
-
+    
         animation_ongoing = 0;
-        parr[0]=0.0001;
-        parr[1]=0.0001;
+        parr1=0.0001;
+        parr2=0.0001;
         indd1=1;
         indd2=0;
         srand(time(NULL));
         glutPostRedisplay();
         break;
-
+    
     }
 }
 
 static void on_timer(int value)
 {
-
+    
     if (value != TIMER_ID)
         return;
 
     if(indd1)
-        parr[0] +=0.1;
+        parr1 +=0.1;
     if(indd2)
-        parr[1] +=0.1;
+        parr2 +=0.1;
+    
+    
 
-
-
-if (yKoord[0]>5.8 && yKoord[1]>5.8 && yKoord[2]>5.8 && yKoord[3]>5.8 && indd1)
+if (dy1>5.8 && dy2>5.8 && dy3>5.8 && dy4>5.8 && indd1)
     {
-        parr[0]=0.0001;
+        parr1=0.0001;
         indd1=0;
         gotova1=0;
         gotova2=0;
         gotova3=0;
         gotova4=0;
     }
-if (yKoord[4]>3 && yKoord[5]>3 && yKoord[6]>3 && yKoord[7]>3 && !indd1)
+if (dy11>3 && dy21>3 && dy31>3 && dy41>3 && !indd1)
     {
         //parr1=0.0001;
         indd1=1;
-
+        
     }
-if (yKoord[4]>5.8 && yKoord[5]>5.8 && yKoord[6]>5.8 && yKoord[7]>5.8 && indd2)
+if (dy11>5.8 && dy21>5.8 && dy31>5.8 && dy41>5.8 && indd2)
     {
         indd2=0;
         gotova11=0;
@@ -417,18 +465,18 @@ if (yKoord[4]>5.8 && yKoord[5]>5.8 && yKoord[6]>5.8 && yKoord[7]>5.8 && indd2)
         gotova31=0;
         gotova41=0;
     }
-if (yKoord[0]>3 && yKoord[1]>3 && yKoord[2]>3 && yKoord[3]>3 && !indd2)
+if (dy1>3 && dy2>3 && dy3>3 && dy4>3 && !indd2)
     {
-        parr[1]=0.0001;
+        parr2=0.0001;
         indd2=1;
-
+        
     }
 
     /*printf(" %lf %lf\n",parr1,parr2);
     printf("%lf %lf\n",dy1,dy21);
     printf("%d %d\n\n",indd1,indd2);*/
 
-
+    
     glutPostRedisplay();
 
     if (animation_ongoing) {
