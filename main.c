@@ -19,9 +19,17 @@ static double yKoord[8],zKoord[8];
 static int indd1=1;
 static int indd2=0;
 
-static const double brzine[4][3] ={{1.3,1,50},{1.95,1.5,100},{2.6,2,130},{3.6,2.5,170}};
-static int gotova1,gotova2,gotova3,gotova4,gotova11,gotova21,gotova31,gotova41;
-static int brzina1,brzina2,brzina3,brzina4,brzina11,brzina21,brzina31,brzina41;
+static double brzine[4][3] ={{1.3,1,50},{1.95,1.5,100},{2.6,2,130},{3.6,2.5,170}}; //parametri rotacije i translacije razlicitih brzina
+static double trake[4][4]  ={{0.9,0.3,0.9,0.3},{0.3,0.9,0.3,0.3},{-0.3,1,0.8,0},{-0.9,0.3,0.3,0.9}}; //polozaj+boja(rgb)
+static int gotova[8];
+static int brzina[8];
+static int pogodio[8];
+static int promasio[4];
+static int lock[8];
+
+time_t vreme[8];
+
+static int brojPromasaja;
 
 //dimenzije prozora
 static int window_width, window_height;
@@ -79,12 +87,13 @@ static void on_reshape(int width, int height)
             0.1, 100000);
 
 }
+// DOBOS
 
 void dobos(double r, double g, double b)
 {
 glPushMatrix();
 
-glScalef(0.35,0.35,0.35);
+glScalef(0.3,0.3,0.3);
 
 glPushMatrix();
     glColor3f(1,0.99,0.99);
@@ -118,90 +127,83 @@ glPopMatrix();
 glPopMatrix();
 
 }
+//NOTA
 
-void prvanota(int brz, int indeks, int parametar)
+void nota(double traka[],int brz, int indeks, int parametar)
 {
     glPushMatrix();
 
     yKoord[indeks]= -2+ brzine[brz][1]*parr[parametar];
     zKoord[indeks] = 0.4+fabs(sin(2.5*brzine[brz][0]*parr[parametar]));
 
-    glTranslatef(0.9,yKoord[indeks]-1,zKoord[indeks]);
+    glTranslatef(traka[0],yKoord[indeks]-1,zKoord[indeks]);
     glRotatef(-brzine[brz][2]*parr[parametar],0.1,0,0);
 
     glPushMatrix();
     glTranslatef(0,0,-0.5);
-    dobos(0.3,0.9,0.3);
+    dobos(traka[1],traka[2],traka[3]);
     glPopMatrix();
 
     glPopMatrix();
 
 }
 
-void druganota(int brz, int indeks, int parametar)
-{
-    glPushMatrix();
-
-    yKoord[indeks]= -2+ brzine[brz][1]*parr[parametar];
-    zKoord[indeks] = 0.4+fabs(sin(2.5*brzine[brz][0]*parr[parametar]));
-
-    glTranslatef(0.3,yKoord[indeks]-1,zKoord[indeks]);
-    glRotatef(-brzine[brz][2]*parr[parametar],0.1,0,0);
-    glPushMatrix();
-    glTranslatef(0,0,-0.5);
-    dobos(0.9,0.3,0.3);
-    glPopMatrix();
-    glPopMatrix();
-}
-
-void trecanota(int brz, int indeks, int parametar)
-{
-    glPushMatrix();
-
-    yKoord[indeks]= -2+ brzine[brz][1]*parr[parametar];
-    zKoord[indeks] = 0.4+fabs(sin(2.5*brzine[brz][0]*parr[parametar]));
-
-    glTranslatef(-0.3,yKoord[indeks]-1,zKoord[indeks]);
-    glRotatef(-brzine[brz][2]*parr[parametar],0.1,0,0);
-    glPushMatrix();
-    glTranslatef(0,0,-0.5);
-    dobos(1,0.8,0);
-    glPopMatrix();
-    glPopMatrix();
-}
-
-void cetvrtanota(int brz, int indeks, int parametar)
-{
-    glPushMatrix();
-
-    yKoord[indeks]= -2+ brzine[brz][1]*parr[parametar];
-    zKoord[indeks] = 0.4+fabs(sin(2.5*brzine[brz][0]*parr[parametar]));
-
-    glTranslatef(-0.9,yKoord[indeks]-1,zKoord[indeks]);
-    glRotatef(-brzine[brz][2]*parr[parametar],0.1,0,0);
-    glPushMatrix();
-    glTranslatef(0,0,-0.5);
-    dobos(0.3,0.3,0.9);
-    glPopMatrix();
-    glPopMatrix();
-}
+// VEROVATNOCA -- (ubaciti jos brzina i jedan talas)
 
 int verovatnoca()
 {
     //srand(time(NULL));
 
     int broj= rand() % 100;
-    if(broj<25)
+
+    if (broj<75)
+        return -1;
+    if(broj<95)
         return 0;
-    if(broj<50)
+    if(broj<99)
         return 1;
-    if(broj<75)
-        return 2;
     else
-        return 3;
+        return 2;
+    /*else
+        return 3;*/
 
 
 }
+void linija(int ind,int p)
+{
+    glPushMatrix();
+
+        glColor3f(1,1,1);
+
+
+        if(time(NULL)*1000 - vreme[ind]*1000 > 1)
+        {
+            glColor3f(1,1,1);
+            vreme[ind]=time(0);
+            promasio[ind]=0;
+        }
+
+        if(pogodio[ind] || pogodio[ind+4])
+            glColor3f(0,0.9,0);
+
+        if(promasio[ind])
+            glColor3f(0.9,0,0);
+
+        glTranslatef(1.25 - ((ind*4)+ p)*0.156,4.8,0);
+        glScalef(0.156, 0.4, 0.31);
+        glutSolidCube(1);
+
+
+    glPopMatrix();
+
+}
+
+void prelaz(int ind)
+{
+    linija(ind,1);
+    linija(ind,3);
+}
+
 
 static void on_display(void)
 {
@@ -221,24 +223,25 @@ static void on_display(void)
         );
 
 //ose
-        glBegin(GL_LINES);
 
-        glColor3f(1,0,0);
-        glVertex3f(0,0,0);
-        glVertex3f(0,0,10);
-        glEnd();
+
 //staza
     glPushMatrix();
     glColor3f(0.5, 0.5, 0.5 );
     glScalef(2.5, 10, 0.3);
     glutSolidCube(1);
     glPopMatrix();
+//PRELAZ
+
+for(int i =0; i<4; i++)
+    prelaz(i);
+
 
 //trava
     glPushMatrix();
-    glColor3f(0, 0.3, 0);
-    glScalef(100, 500, 0.29);
-    glutSolidCube(1);
+        glColor3f(0, 0.3, 0);
+        glScalef(100, 500, 0.29);
+        glutSolidCube(1);
     glPopMatrix();
 
 //pozadina
@@ -249,99 +252,68 @@ static void on_display(void)
     glScalef(100, 0.1, 500);
     glutSolidCube(1);
     glPopMatrix();
-
-//pesacki
-
-    //gornja
-    glBegin(GL_LINES);
-        glColor3f(1,0,0);
-        glVertex3f(-10,4.6,0.3);
-        glVertex3f(10,4.6,0.3);
-    glEnd();
-
-    //donja
-    glBegin(GL_LINES);
-        glColor3f(1,0,0);
-        glVertex3f(-10,5,0.3);
-        glVertex3f(10,5,0.3);
-    glEnd();
 //  prvi talas
 if(indd1)
 {
-
-    if(!gotova1)
+    for(int j=0;j<4;j++)
     {
-        brzina1=verovatnoca();
-        gotova1=1;
-        //printf("%d ",brzina1);
-    }
-    prvanota(brzina1,0,0);
 
-
-    if(!gotova2)
-    {
-        brzina2=verovatnoca();
-        gotova2=1;
-        //printf("%d ",brzina2);
+        if(!gotova[j])
+        {
+            brzina[j]=verovatnoca();
+            gotova[j]=1;
+            //printf("%d ",brzina1);
+        }
+        if(brzina[j] != -1)
+            nota(trake[j],brzina[j],j,0);
+        else
+            yKoord[j]=6.9;
     }
-    druganota(brzina2,1,0);
 
-    if(!gotova3)
-    {
-        brzina3=verovatnoca();
-        gotova3=1;
-        //printf("%d ",brzina3);,0
-    }
-    trecanota(brzina3,2,0);
-
-    if(!gotova4)
-    {
-        brzina4=verovatnoca();
-        //printf("%d ",brzina4);
-        gotova4=1;
-    }
-    cetvrtanota(brzina4,3,0);
 }
 //drugi talas
 
 if(indd2)
+{
+    for(int j=4;j<8;j++)
     {
-
-        if(!gotova11)
+        if(!gotova[j])
         {
-            brzina11=verovatnoca();
-            gotova11=1;
-            //printf("%d ",brzina11);
+            brzina[j]=verovatnoca();
+            gotova[j]=1;
+            //printf("%d ",brzina1);
         }
-        prvanota(brzina11,4,1);
-
-
-        if(!gotova21)
-        {
-            brzina21=verovatnoca();
-            gotova21=1;
-            //printf("%d ",brzina21);
-        }
-        druganota(brzina21,5,1);
-
-        if(!gotova31)
-        {
-            brzina31=verovatnoca();
-            gotova31=1;
-            //printf("%d ",brzina31);
-        }
-        trecanota(brzina31,6,1);
-
-        if(!gotova41)
-        {
-            brzina41=verovatnoca();
-            //printf("%d ",brzina41);
-            gotova41=1;
-        }
-        cetvrtanota(brzina41,7,1);
+        if(brzina[j] != -1)
+            nota(trake[j-4],brzina[j],j,1);
+        else
+            yKoord[j]=6.9;
     }
+}
 
     glutSwapBuffers();
+}
+
+void reaguj(int i)
+{
+  if((yKoord[i]>5.5 && yKoord[i]<=6.3) )
+        {
+
+            pogodio[i] = 1;
+
+        }
+        else if((yKoord[i+4]>5.5 && yKoord[i+4]<=6.3) )
+        {
+
+            pogodio[i+4] = 1;
+
+        }
+        else
+        {
+            promasio[i]=1;
+            brojPromasaja++;
+
+        }
+        vreme[i]=time(0);
 }
 
 static void on_keyboard(unsigned char key, int x, int y)
@@ -350,6 +322,7 @@ static void on_keyboard(unsigned char key, int x, int y)
     case 27:
         exit(0);
         break;
+
 
     case 'g':
     case 'G':
@@ -369,15 +342,29 @@ static void on_keyboard(unsigned char key, int x, int y)
     case 'r':
     case 'R':
 
+        srand(time(NULL));
         animation_ongoing = 0;
         parr[0]=0.0001;
         parr[1]=0.0001;
         indd1=1;
         indd2=0;
         srand(time(NULL));
+        brojPromasaja=0;
         glutPostRedisplay();
         break;
 
+    case 'j':
+        reaguj(0);
+         break;
+    case 'k':
+        reaguj(1);
+         break;
+    case 'l':
+        reaguj(2);
+        break;
+    case ';':
+        reaguj(3);
+         break;
     }
 }
 
@@ -394,39 +381,61 @@ static void on_timer(int value)
 
 
 
-if (yKoord[0]>5.8 && yKoord[1]>5.8 && yKoord[2]>5.8 && yKoord[3]>5.8 && indd1)
+if (yKoord[0]>6.8 && yKoord[1]>6.8 && yKoord[2]>6.8 && yKoord[3]>6.8 && indd1)
     {
+
         parr[0]=0.0001;
         indd1=0;
-        gotova1=0;
-        gotova2=0;
-        gotova3=0;
-        gotova4=0;
+    for(int i=0;i<4;i++)
+    {
+        gotova[i]=0;
+        lock[i]=0;
+        pogodio[i]=0;
+    }
     }
 if (yKoord[4]>3 && yKoord[5]>3 && yKoord[6]>3 && yKoord[7]>3 && !indd1)
     {
-        //parr1=0.0001;
         indd1=1;
 
     }
-if (yKoord[4]>5.8 && yKoord[5]>5.8 && yKoord[6]>5.8 && yKoord[7]>5.8 && indd2)
+if (yKoord[4]>6.8 && yKoord[5]>6.8 && yKoord[6]>6.8 && yKoord[7]>6.8 && indd2)
     {
-        indd2=0;
-        gotova11=0;
-        gotova21=0;
-        gotova31=0;
-        gotova41=0;
+    indd2=0;
+    parr[1]=0.0001;
+    for(int i=4;i<8;i++)
+    {
+        gotova[i]=0;
+        lock[i]=0;
+        pogodio[i]=0;
+    }
+
     }
 if (yKoord[0]>3 && yKoord[1]>3 && yKoord[2]>3 && yKoord[3]>3 && !indd2)
     {
-        parr[1]=0.0001;
         indd2=1;
 
     }
 
-    /*printf(" %lf %lf\n",parr1,parr2);
-    printf("%lf %lf\n",dy1,dy21);
-    printf("%d %d\n\n",indd1,indd2);*/
+ for(int i=0;i<8;i++)
+    {
+
+       if(!lock[i] && !pogodio[i] && brzina[i] != -1  && yKoord[i]>6.3 && yKoord[i]<6.6 )
+            {
+                brojPromasaja++;
+                promasio[i%4]=1;
+                vreme[i]=time(0);
+                //pogodio[i]=0;
+                lock[i]=1;
+
+            }
+
+    }
+    //printf(" %lf %lf\n",parr1,parr2);
+   /* printf("%lf %lf\n",yKoord[0],yKoord[4]);
+    printf("%d %d\n\n",pogodio[0],promasio[0]);*/
+    printf("Broj promasaja je %d\n",brojPromasaja);
+    for(int i=0;i<8;i++)
+        printf("%d %d %d\n",pogodio[i],promasio[i],brzina[i]);
 
 
     glutPostRedisplay();
