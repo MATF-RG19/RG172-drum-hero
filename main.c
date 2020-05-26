@@ -12,22 +12,32 @@
 #define EPSILON 0.01
 
 //parametri
+
 static double animation_ongoing;
-static double parr[2]={0.0001,0.000};
-static double yKoord[8],zKoord[8];
+static double parametarZivota= 0.0001;
+static double parr[8]={0.0001,0.000,0.000,0.000,0.000,0.000,0.000,0.000};
+static double yKoord[32],zKoord[32];
 
-static int indd1=1;
-static int indd2=0;
-
-static double brzine[4][3] ={{1.3,1,50},{1.95,1.5,100},{2.6,2,130},{3.6,2.5,170}}; //parametri rotacije i translacije razlicitih brzina
+static int indd[8]={1,0,0,0,0,0,0,0};
+static double brzine[4][3] ={{0.8,0.7,35},{1.3,1,50},{1.95,1.5,100},{2.6,2,130},{3.6,2.5,170}}; //parametri rotacije i translacije razlicitih brzina
 static double trake[4][4]  ={{0.9,0.3,0.9,0.3},{0.3,0.9,0.3,0.3},{-0.3,1,0.8,0},{-0.9,0.3,0.3,0.9}}; //polozaj+boja(rgb)
-static int gotova[8];
-static int brzina[8];
-static int pogodio[8];
-static int promasio[4];
-static int lock[8];
+static int gotova[32];
+static int brzina[32];
 
-time_t vreme[8];
+static int indZivota[10];
+
+static int pogodio[32];
+static int promasio[4];
+static int lock[32];
+static int lock2[8];
+
+static int prviTalas;
+static unsigned pocetakIgre;
+
+static unsigned rezultat =0;
+
+static time_t vreme[32];
+static time_t promenaTezine;
 
 static int brojPromasaja;
 
@@ -63,9 +73,11 @@ int main(int argc, char **argv)
     glClearColor(0.1, 0.1, 0.1, 0);
     glEnable(GL_DEPTH_TEST);
 
-
+    brzina[0]=1;
+    promenaTezine = time(0);
     // Ulazak u glavnu petlj
     glutMainLoop();
+
 
     return 0;
 }
@@ -153,17 +165,24 @@ void nota(double traka[],int brz, int indeks, int parametar)
 int verovatnoca()
 {
     //srand(time(NULL));
-
+    if(!prviTalas)
+    {
+        prviTalas=1;
+        return 1;
+    }
     int broj= rand() % 100;
-
     if (broj<75)
         return -1;
-    if(broj<95)
+    //broj= rand() % 100;
+    return 1;
+    /*if (broj<35)
         return 0;
-    if(broj<99)
+    if(broj<70)
         return 1;
-    else
+    if(broj<90)
         return 2;
+    else
+        return 3;*/
     /*else
         return 3;*/
 
@@ -183,7 +202,7 @@ void linija(int ind,int p)
             promasio[ind]=0;
         }
 
-        if(pogodio[ind] || pogodio[ind+4])
+        if(pogodio[ind] || pogodio[ind+4] || pogodio[ind+8] || pogodio[ind+12] || pogodio[ind+16] || pogodio[ind+20] || pogodio[ind+24] || pogodio[ind+28] )
             glColor3f(0,0.9,0);
 
         if(promasio[ind])
@@ -217,7 +236,7 @@ static void on_display(void)
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     gluLookAt(
-            0, 5.9 ,5,
+            0, 6.2 ,4,
             0, 0, 0,
             0, 0, 1
         );
@@ -252,66 +271,139 @@ for(int i =0; i<4; i++)
     glScalef(100, 0.1, 500);
     glutSolidCube(1);
     glPopMatrix();
-//  prvi talas
-if(indd1)
+
+
+
+//bilbord
+
+    glPushMatrix();
+
+    //tabla
+    glPushMatrix();
+    glColor3f(0.4, 0.4, 0.4);
+
+
+    glTranslatef(2.5,1,1);
+    glRotatef(40,0,0,1);
+    glScalef(1.5, 0.1, 1);
+
+    glutSolidCube(1);
+    glPopMatrix();
+
+    //okvir
+    glPushMatrix();
+    glColor3f(0.5, 0.5, 0.5);
+    if(brojPromasaja >9)
+        glColor3f(0.9, 0, 0);
+
+    glTranslatef(2.49,1,1);
+    glRotatef(40,0,0,1);
+    glScalef(1.3, 0.2, 0.8);
+
+    glutSolidCube(1);
+    glPopMatrix();
+
+    //stubic
+    glPushMatrix();
+    glColor3f(0.4, 0.4, 0.4);
+
+    glTranslatef(2.5,1,0);
+    glScalef(0.1, 0.1, 1.5);
+    glutSolidCube(1);
+    glPopMatrix();
+
+
+    glPopMatrix();
+
+void zivoti()
 {
-    for(int j=0;j<4;j++)
+    glPushMatrix();
+
+
+
+    glTranslatef(2.53,1.5,1.15);
+    glRotatef(40,0,0,1);
+
+    for(int i=0;i<5;i++)
+    {
+        glPushMatrix();
+        glPushMatrix();
+        glTranslatef(-0.7+i*0.2,0,0);
+        glScalef(0.6,0.6,0.6);
+
+        if((brojPromasaja < i+1) && !indZivota[i])
+        {
+            dobos(0,0.2*i,0);
+        }
+        else
+            indZivota[i]=1;
+        glPopMatrix();
+        glPopMatrix();
+    }
+    for(int i=0;i<5;i++)
+    {
+        glPushMatrix();
+        glTranslatef(-0.7+i*0.2,0,-0.4);
+        glScalef(0.6,0.6,0.6);
+
+        if((brojPromasaja <= i+5) && !indZivota[i+5])
+        {
+            dobos(1/(i+0.1),0,0);
+        }
+        else
+            indZivota[i+5]=1;
+        glPopMatrix();
+    }
+    glPopMatrix();
+}
+   zivoti();
+
+
+for(int i=0;i<8;i++)
+{
+
+if(indd[i])
+{
+    for(int j=4*i;j<4*i+4;j++)
     {
 
         if(!gotova[j])
         {
             brzina[j]=verovatnoca();
+            //brzina[j]=0;
             gotova[j]=1;
             //printf("%d ",brzina1);
         }
         if(brzina[j] != -1)
-            nota(trake[j],brzina[j],j,0);
-        else
-            yKoord[j]=6.9;
-    }
-
-}
-//drugi talas
-
-if(indd2)
-{
-    for(int j=4;j<8;j++)
-    {
-        if(!gotova[j])
         {
-            brzina[j]=verovatnoca();
-            gotova[j]=1;
-            //printf("%d ",brzina1);
+            nota(trake[j%4],brzina[j],j,i);
+
         }
-        if(brzina[j] != -1)
-            nota(trake[j-4],brzina[j],j,1);
         else
             yKoord[j]=6.9;
     }
 }
-
+}
     glutSwapBuffers();
 }
 
 void reaguj(int i)
 {
-  if((yKoord[i]>5.5 && yKoord[i]<=6.3) )
+    int znak =0;
+    for(int j=0;j<32;j+=4)
+    {
+        if((yKoord[i+j]>5.5 && yKoord[i+j]<=6.3) )
         {
-
-            pogodio[i] = 1;
-
+            pogodio[i+j] = 1;
+            znak=1;
+            rezultat+=50;
+            break;
         }
-        else if((yKoord[i+4]>5.5 && yKoord[i+4]<=6.3) )
-        {
-
-            pogodio[i+4] = 1;
-
-        }
-        else
+    }
+    if(!znak)
         {
             promasio[i]=1;
             brojPromasaja++;
-
         }
         vreme[i]=time(0);
 }
@@ -327,7 +419,8 @@ static void on_keyboard(unsigned char key, int x, int y)
     case 'g':
     case 'G':
 
-        if (!animation_ongoing) {
+        if (!animation_ongoing && !pocetakIgre) {
+            pocetakIgre=1;
             glutTimerFunc(TIMER_INTERVAL, on_timer, TIMER_ID);
             animation_ongoing = 1;
         }
@@ -344,12 +437,14 @@ static void on_keyboard(unsigned char key, int x, int y)
 
         srand(time(NULL));
         animation_ongoing = 0;
-        parr[0]=0.0001;
-        parr[1]=0.0001;
-        indd1=1;
-        indd2=0;
+        static int indd[8]={1,0,0,0,0,0,0,0};
+        for(int i=0;i<8;i++)
+            parr[i]=0.0001;
+        static double yKoord[32],zKoord[32];
         srand(time(NULL));
         brojPromasaja=0;
+        static int indZivota[10];
+        pocetakIgre=0;
         glutPostRedisplay();
         break;
 
@@ -372,72 +467,88 @@ static void on_timer(int value)
 {
 
     if (value != TIMER_ID)
+
         return;
 
-    if(indd1)
-        parr[0] +=0.1;
-    if(indd2)
-        parr[1] +=0.1;
+//parametar inkrement
+    for(int i=0;i<8;i++)
+        if(indd[i])
+            parr[i] +=0.1;
+    parametarZivota +=0.1;
 
 
 
-if (yKoord[0]>6.8 && yKoord[1]>6.8 && yKoord[2]>6.8 && yKoord[3]>6.8 && indd1)
+//pokretanje talasa nota
+for(int i=0;i<8;i++)
+{
+
+if (yKoord[4*i]>6.5 && yKoord[4*i+1]>6.5 && yKoord[4*i+2]>6.5 && yKoord[4*i+3]>6.5)
     {
 
-        parr[0]=0.0001;
-        indd1=0;
-    for(int i=0;i<4;i++)
-    {
-        gotova[i]=0;
-        lock[i]=0;
-        pogodio[i]=0;
-    }
-    }
-if (yKoord[4]>3 && yKoord[5]>3 && yKoord[6]>3 && yKoord[7]>3 && !indd1)
-    {
-        indd1=1;
+    indd[i]=0;
 
-    }
-if (yKoord[4]>6.8 && yKoord[5]>6.8 && yKoord[6]>6.8 && yKoord[7]>6.8 && indd2)
+    for(int j=4*i;j<4*i+4;j++)
     {
-    indd2=0;
-    parr[1]=0.0001;
-    for(int i=4;i<8;i++)
-    {
-        gotova[i]=0;
-        lock[i]=0;
-        pogodio[i]=0;
+        yKoord[j]= -2;
+        gotova[j]=0;
+        lock[j]=0;
+        pogodio[j]=0;
     }
 
     }
-if (yKoord[0]>3 && yKoord[1]>3 && yKoord[2]>3 && yKoord[3]>3 && !indd2)
-    {
-        indd2=1;
 
+if (yKoord[4*i]> 0.1 && yKoord[4*i+1]> 0.1 && yKoord[4*i+2]> 0.1 && yKoord[4*i+3]> 0.1 && !indd[(i+1)%8] )
+    {
+        indd[(i+1)%8]=1;
+        parr[(i+1)%8]=0.0001;
     }
 
- for(int i=0;i<8;i++)
+}
+
+int promasajLock=0;
+//promasena nota
+ for(int i=0;i<32;i++)
     {
 
-       if(!lock[i] && !pogodio[i] && brzina[i] != -1  && yKoord[i]>6.3 && yKoord[i]<6.6 )
+
+       if(!lock[i] && !pogodio[i] && brzina[i] != -1  && yKoord[i]>6.3 && yKoord[i]<6.5 )
             {
-                brojPromasaja++;
+                if(!promasajLock)
+                {
+                    brojPromasaja++;
+                    promasajLock=1;
+                }
                 promasio[i%4]=1;
-                vreme[i]=time(0);
+                vreme[i%4]=time(0);
                 //pogodio[i]=0;
                 lock[i]=1;
 
             }
 
     }
+
+
+
+if(brojPromasaja >9)
+{
+    animation_ongoing = 0;
+    printf("Vas rezultat je=%u \n",rezultat);
+}
+
+
     //printf(" %lf %lf\n",parr1,parr2);
    /* printf("%lf %lf\n",yKoord[0],yKoord[4]);
     printf("%d %d\n\n",pogodio[0],promasio[0]);*/
-    printf("Broj promasaja je %d\n",brojPromasaja);
-    for(int i=0;i<8;i++)
-        printf("%d %d %d\n",pogodio[i],promasio[i],brzina[i]);
-
-
+    //printf("Broj promasaja je %d iii %d\n",brojPromasaja,prviTalas);
+    //for(int i=0;i<8;i++)
+/*    printf("%d",indd[i]);
+    printf("\n");
+    printf("%lf %lf %lf %lf",yKoord[0],yKoord[1],yKoord[2],yKoord[3]);
+    printf("\n");
+    printf("%lf %lf %lf %lf",yKoord[4],yKoord[5],yKoord[6],yKoord[7]);
+    printf("\n");
+    printf("\n");
+*/
     glutPostRedisplay();
 
     if (animation_ongoing) {
