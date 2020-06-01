@@ -8,6 +8,9 @@ Preživeti napade doboša što duže moguće.
 ### Kako to uraditi:
 Koristiti kontrole kao i svoj osećaj za ritam.<br>
 _____
+### Pokretanje igre:
+  Dupli klik na dh1.exe (**Windows**)
+_____
 ### Kontrole:
 
   | Dugme | Akcija |
@@ -23,9 +26,6 @@ _____
   | <kbd> Backspace </kbd> | Povratak na glavni meni |
   | <kbd> ESC </kdb> | Izlazak iz igre |
 
-_____
-### Pokretanje igre:
-  Dupli klik na dh1.exe (**Windows**)
 _____  
 ### Reviews:
     "Guitar hero with a spin" - vuxain
