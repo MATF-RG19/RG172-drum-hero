@@ -9,7 +9,7 @@ Preživeti napade doboša što duže moguće.
 Koristiti kontrole kao i svoj osećaj za ritam.<br>
 _____
 ### Pokretanje igre:
-  Dupli klik na dh1.exe (**Windows**)
+  Dupli klik na друм hero.exe (**Windows**)
 _____
 ### Kontrole:
 
