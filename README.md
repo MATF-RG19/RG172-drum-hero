@@ -32,7 +32,7 @@ _____
     "It's basically the Dark souls of rhythm games" - IGN
     "This game really makes you feel like a друм" - Gamespot
     "Mostly Negative" - Steam
-    0/10 No music - everyone
+    "0/10 No music" - everyone
   
   
   
