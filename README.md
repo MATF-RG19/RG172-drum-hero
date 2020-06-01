@@ -25,7 +25,7 @@ _____
 
 _____
 ### Pokretanje igre:
-  **Windows:** Dupli klik na dh1.exe
+  Dupli klik na dh1.exe (**Windows**)
 _____  
 ### Reviews:
     "Guitar hero with a spin" - vuxain
