@@ -14,7 +14,10 @@ _____
   
   **Linux:** <br>
           1. Iz terminala pokrenite makefile komandom **make** <br>
-          2. Igru pokrenite komandom **./drumHero**
+          2. Igru pokrenite komandom **./drumHero** <br> 
+          *Preduslov:* OpenGL i GLUT biblioteke
+          
+    
 _____
 ### Kontrole:
 
@@ -30,6 +33,15 @@ _____
   | <kbd>F</kbd> | Traka 4|
   | <kbd> Backspace </kbd> | Povratak na glavni meni |
   | <kbd> ESC </kdb> | Izlazak iz igre |
+
+_____
+### Biblioteke:
+  **Windows:** <br>
+  Dupli klik na друм hero.exe
+  
+  **Linux:** <br>
+          1. Iz terminala pokrenite makefile komandom **make** <br>
+          2. Igru pokrenite komandom **./drumHero**
 
 _____  
 ### Reviews:
