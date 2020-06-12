@@ -1,7 +1,8 @@
 #include <stdio.h>
-#include <windows.h>
+//#include <windows.h>
 #include <GL/glut.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
 #include <math.h>
 
@@ -18,7 +19,7 @@
 // Parametri igre
 
 double animation_ongoing;
-double brzine[4][3] ={{0.8,0.7,35},{1.3,1,50},{1.95,1.5,100},{2.6,2,130},{3.6,2.5,170}}; // parametri rotacije i translacije razlicitih brzina kotrljanja
+double brzine[4][3] ={{0.8,0.7,35},{1.3,1,50},{1.95,1.5,100},{2.6,2,130}}; // parametri rotacije i translacije razlicitih brzina kotrljanja
 double trake[4][4]  ={{0.9,0.3,0.9,0.3},{0.3,0.9,0.3,0.3},{-0.3,1,0.8,0},{-0.9,0.3,0.3,0.9}}; // parametri polozaja i boje 4 razlita dobosa
 
 // Atributi nota

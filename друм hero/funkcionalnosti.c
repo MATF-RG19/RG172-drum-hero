@@ -1,6 +1,7 @@
 #include <stdio.h>
-#include <windows.h>
+//#include <windows.h>
 #include <GL/glut.h>
+#include <string.h>
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>

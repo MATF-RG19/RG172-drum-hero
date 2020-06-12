@@ -1,7 +1,8 @@
 #include <stdio.h>
-#include <windows.h>
+//#include <windows.h>
 #include <GL/glut.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
 #include <math.h>
 
@@ -265,7 +266,7 @@ glPopMatrix();
 
 
     // Glavni meni
-    image_read(image, "teksture/mainmenu.bmp");
+    image_read(image, "teksture/mainMenuFinal.bmp");
     glBindTexture(GL_TEXTURE_2D, textures[3]);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
