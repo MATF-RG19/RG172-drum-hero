@@ -9,7 +9,12 @@ Preživeti napade doboša što duže moguće.
 Koristiti kontrole kao i svoj osećaj za ritam.<br>
 _____
 ### Pokretanje igre:
-  Dupli klik na друм hero.exe (**Windows**)
+  **Windows:** <br>
+  Dupli klik na друм hero.exe
+  
+  **Linux:** <br>
+          1. Iz terminala pokrenite makefile komandom **make** <br>
+          2. Igru pokrenite komandom **./drumHero**
 _____
 ### Kontrole:
 
